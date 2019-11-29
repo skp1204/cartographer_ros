@@ -33,7 +33,7 @@
   <node name="cartographer_node" pkg="cartographer_ros"
       type="cartographer_node" args="
           -configuration_directory $(find cartographer_ros)/configuration_files
-          -configuration_basename revo_lds.lua"
+          -configuration_basename bear_car.lua"
       output="screen">
     <remap from="base_link_laser" to="horizontal_laser_2d" />
   <!--  <remap from="imu_link" to="imu" />
