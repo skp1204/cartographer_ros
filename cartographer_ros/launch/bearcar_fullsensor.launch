@@ -30,15 +30,50 @@
     textfile="$(find cartographer_ros)/urdf/backpack_2d.urdf" />-->
  <!--<node name="robot_state_publisher" pkg="robot_state_publisher"
     type="robot_state_publisher" />-->
+
+ <!--cam to laser.. <node name="squash_depth_camera" pkg="depthimage_to_laserscan"
+      type="depthimage_to_laserscan">
+    <remap from="image" to="/camera/depth/image_raw" />
+    <param name="scan_height" value="10"/>
+  <param name="/depthimage_to_laserscan/output_frame_id"
+      value="camera_depth_frame" />
+     <remap from="scan" to="camscan" />
+  </node>-->
+  <include file="$(find odometry_agent)/launch/ekf_template.launch"/>
+
+
+  <node pkg="nodelet" type="nodelet" name="image_processing_manager"
+        args="manager" />
+  <node pkg="nodelet" type="nodelet" name="metricizer"
+        args="load depth_image_proc/convert_metric image_processing_manager">
+    <remap from="image_raw" to="/camera/depth/image_raw" />
+    <remap from="image" to="/image" />
+  </node>
+  <node pkg="nodelet" type="nodelet" name="rectifier"
+        args="load image_proc/rectify image_processing_manager">
+    <remap from="image_mono" to="/image" />
+    <remap from="camera_info" to="/camera/depth/camera_info" />
+    <remap from="image_rect" to="/image_rect" />
+  </node>
+  <node pkg="nodelet" type="nodelet" name="cloudifier"
+        args="load depth_image_proc/point_cloud_xyz image_processing_manager">
+    <remap from="camera_info" to="/camera/depth/camera_info" />
+    <remap from="image_rect" to="/image_rect" />
+    <remap from="points2" to="/points2" />
+  </node>
+
+
+
   <node name="cartographer_node" pkg="cartographer_ros"
       type="cartographer_node" args="
           -configuration_directory $(find cartographer_ros)/configuration_files
-          -configuration_basename revo_lds.lua"
+          -configuration_basename bear_car_fullsensor.lua"
       output="screen">
-    <remap from="base_link_laser" to="horizontal_laser_2d" />
-  <!--  <remap from="imu_link" to="imu" />
-    <remap from="odom_filtered" to="odom/filtered" />-->
-       
+   <!-- <remap from="horizontal_laser_2d" to="/scan" />-->
+   <!--<remap from="imu" to="imu/data" />-->
+    <remap from="odom" to="odometry/filtered" />-->
+    <remap from="scan" to="scan" />
+    <remap from="points2" to="points" />
   </node>
   <node name="rviz" pkg="rviz" type="rviz" required="true"
       args="-d $(find cartographer_ros)/configuration_files/demo_3d.rviz" /> 
