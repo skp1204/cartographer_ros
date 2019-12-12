@@ -15,7 +15,7 @@
 -->
 
 <launch>
-  <node pkg="tf" type="static_transform_publisher" name="base_link_to_laser"
+ <!-- <node pkg="tf" type="static_transform_publisher" name="base_link_to_laser"
     args="0.2245 0.0 0.2 0.0 0.0 0.0 /base_link /laser 10"/>
 
     <node pkg="tf" type="static_transform_publisher" name="base_to_camera"
@@ -25,7 +25,7 @@
     args="0.15 0.0 0.27 0.0 0.0 0.0 /base_link /camera_imu_optical_frame 10"/>
 
     <node pkg="tf" type="static_transform_publisher" name="map_to_odom"
-    args="0.0 0.0 0.0 0.0 0.0 0.0 /map /odom 10"/>
+    args="0.0 0.0 0.0 0.0 0.0 0.0 /map /odom 10"/>-->
   <!-- <param name="robot_description"
     textfile="$(find cartographer_ros)/urdf/backpack_2d.urdf" />-->
  <!--<node name="robot_state_publisher" pkg="robot_state_publisher"
@@ -39,8 +39,7 @@
       value="camera_depth_frame" />
      <remap from="scan" to="camscan" />
   </node>-->
-  <include file="$(find odometry_agent)/launch/ekf_template.launch"/>
-
+  <!--<include file="$(find odometry_agent)/launch/ekf_template.launch"/>-->
 
   <node pkg="nodelet" type="nodelet" name="image_processing_manager"
         args="manager" />
@@ -70,8 +69,8 @@
           -configuration_basename bear_car_fullsensor.lua"
       output="screen">
    <!-- <remap from="horizontal_laser_2d" to="/scan" />-->
-   <!--<remap from="imu" to="imu/data" />-->
-    <remap from="odom" to="odometry/filtered" />-->
+  <!-- <remap from="imu" to="imu/data" />-->
+    <remap from="odom" to="/odometry/filtered" />
     <remap from="scan" to="scan" />
     <remap from="points2" to="points" />
   </node>
