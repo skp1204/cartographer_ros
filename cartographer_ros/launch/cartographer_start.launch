@@ -48,7 +48,7 @@
     <remap from="scan" to="scan" />
     <remap from="points2" to="points" />
   </node>
- <!--  <node name="rviz" pkg="rviz" type="rviz" required="true"
+<!--   <node name="rviz" pkg="rviz" type="rviz" required="true"
       args="-d $(find cartographer_ros)/configuration_files/demo_3d.rviz" /> 
  -->
   <node name="cartographer_occupancy_grid_node" pkg="cartographer_ros"
